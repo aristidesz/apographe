@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "fuel_prices_retrieval"
+version = "0.1.0"
+description = ""
+authors = ["Aristides <10169524+aristidesz@users.noreply.github.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+numpy = "^2.1.2"
+isort = "^5.10.1"
+pre-commit = "^4.0.0"
+flake8 = "7.1.1"
+black = "^24.8.0"
+pytest = "^8.3.3"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.12.0"
+bandit = "^1.7.10"
+pre-commit = "^4.0.1"
+pytest = "^8.3.3"
+coverage = "^7.6.3"
+pytest-cov = "^5.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
