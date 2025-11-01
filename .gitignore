@@ -165,5 +165,5 @@ cython_debug/
 .vscode/
 
 data/*
-
+!data/.gitkeep
 .DS_Store
