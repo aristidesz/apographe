@@ -1,3 +1,4 @@
+import shutil
 import time
 
 import pandas as pd
@@ -71,9 +72,25 @@ def click_ok_button(driver):
 def download_petroleum_prices():
     options = Options()
     options.add_argument("--headless")
-    options.binary_location = "/usr/bin/firefox"
+    # Detect firefox and geckodriver paths instead of hard-coding
+    firefox_path = shutil.which("firefox")
+    gecko_path = shutil.which("geckodriver")
 
-    service = Service()  # Default: looks for geckodriver in PATH
+    if firefox_path:
+        options.binary_location = firefox_path
+        print(f"Using Firefox binary at: {firefox_path}")
+    else:
+        print("Warning: firefox binary not found in PATH)")
+
+    if gecko_path:
+        service = Service(executable_path=gecko_path)
+        print(f"Using geckodriver at: {gecko_path}")
+    else:
+        service = Service()  # fallback: Selenium will try to find geckodriver in PATH
+        print(
+            "Warning: geckodriver not found in PATH; Service() will try default search"
+        )
+
     driver = webdriver.Firefox(options=options, service=service)
 
     driver.set_window_size(550, 691)

@@ -30,12 +30,13 @@ jobs:
       - name: Install Firefox and Geckodriver
         run: |
           sudo apt-get update
-          sudo apt-get install -y firefox
-          GECKODRIVER_VERSION=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-          wget https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz
-          tar -xzf geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz
-          chmod +x geckodriver
-          sudo mv geckodriver /usr/local/bin/
+          # Install both firefox and geckodriver via apt so they are put in standard locations
+          sudo apt-get install -y firefox geckodriver
+          # sanity checks (optional, helpful for debugging in CI logs)
+          which firefox || true
+          firefox --version || true
+          which geckodriver || true
+          geckodriver --version || true
 
       - name: Run script
         run: |
