@@ -34,16 +34,6 @@ jobs:
           which firefox || true
           firefox --version || true
 
-      - name: Setup Geckodriver
-        uses: browser-actions/setup-geckodriver@v1
-        with:
-          geckodriver-version: latest
-
-      - name: Sanity checks
-        run: |
-          which geckodriver || true
-          geckodriver --version || true
-    
       - name: Run script
         run: |
           poetry run python main.py

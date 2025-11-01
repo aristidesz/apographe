@@ -73,6 +73,7 @@ def download_petroleum_prices():
     options = Options()
     options.add_argument("--headless")
     # Detect firefox and geckodriver paths instead of hard-coding
+
     firefox_path = shutil.which("firefox")
     gecko_path = shutil.which("geckodriver")
 

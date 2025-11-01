@@ -12,6 +12,7 @@ selenium = "^4.36.0"
 bs4 = "^0.0.2"
 pandas = "^2.3.3"
 numpy = "^2.1.2"
+webdriver-manager = "^4.0.2"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.12.0"
