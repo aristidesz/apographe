@@ -1,12 +1,12 @@
-import shutil
 import time
 
+import chromedriver_autoinstaller
 import pandas as pd
 from bs4 import BeautifulSoup
+from pyvirtualdisplay import Display
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
@@ -70,29 +70,20 @@ def click_ok_button(driver):
 
 
 def download_petroleum_prices():
-    options = Options()
-    options.add_argument("--headless")
-    # Detect firefox and geckodriver paths instead of hard-coding
+    display = Display(visible=0, size=(1200, 1200))
+    display.start()
 
-    firefox_path = shutil.which("firefox")
-    gecko_path = shutil.which("geckodriver")
+    chromedriver_autoinstaller.install()
 
-    if firefox_path:
-        options.binary_location = firefox_path
-        print(f"Using Firefox binary at: {firefox_path}")
-    else:
-        print("Warning: firefox binary not found in PATH)")
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--window-size=1200,1200")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--ignore-certificate-errors")
 
-    if gecko_path:
-        service = Service(executable_path=gecko_path)
-        print(f"Using geckodriver at: {gecko_path}")
-    else:
-        service = Service()  # fallback: Selenium will try to find geckodriver in PATH
-        print(
-            "Warning: geckodriver not found in PATH; Service() will try default search"
-        )
-
-    driver = webdriver.Firefox(options=options, service=service)
+    driver = webdriver.Chrome(options=chrome_options)
 
     driver.set_window_size(550, 691)
     all_data = []

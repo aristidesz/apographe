@@ -13,6 +13,8 @@ bs4 = "^0.0.2"
 pandas = "^2.3.3"
 numpy = "^2.1.2"
 webdriver-manager = "^4.0.2"
+chromedriver-autoinstaller = "^0.6.4"
+pyvirtualdisplay = "^3.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.12.0"
