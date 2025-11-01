@@ -71,6 +71,7 @@ def click_ok_button(driver):
 def download_petroleum_prices():
     options = Options()
     options.add_argument("--headless")
+    options.binary_location = "/usr/bin/firefox"
 
     service = Service()  # Default: looks for geckodriver in PATH
     driver = webdriver.Firefox(options=options, service=service)
