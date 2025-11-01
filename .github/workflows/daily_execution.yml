@@ -27,17 +27,23 @@ jobs:
         run: |
           poetry install
 
-      - name: Install Firefox and Geckodriver
+      - name: Install Firefox
         run: |
           sudo apt-get update
-          # Install both firefox and geckodriver via apt so they are put in standard locations
-          sudo apt-get install -y firefox geckodriver
-          # sanity checks (optional, helpful for debugging in CI logs)
+          sudo apt-get install -y firefox
           which firefox || true
           firefox --version || true
+
+      - name: Setup Geckodriver
+        uses: browser-actions/setup-geckodriver@v1
+        with:
+          geckodriver-version: latest
+
+      - name: Sanity checks
+        run: |
           which geckodriver || true
           geckodriver --version || true
-
+    
       - name: Run script
         run: |
           poetry run python main.py
