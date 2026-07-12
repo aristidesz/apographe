@@ -15,7 +15,9 @@ def run(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--download", type=bool, help="True or False to download artifacts"
+        "--download",
+        action="store_true",
+        help="Download previously retrieved fuel price artifacts instead of scraping",
     )
     args = parser.parse_args()
     run(args)

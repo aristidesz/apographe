@@ -22,7 +22,7 @@ repos:
     rev: 1.7.10
     hooks:
       - id: bandit
-        args: ['-r', 'src']
+        exclude: '^tests/'
   - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 24.8.0
     hooks:
