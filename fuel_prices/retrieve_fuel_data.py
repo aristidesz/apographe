@@ -1,3 +1,4 @@
+import shutil
 import time
 
 import chromedriver_autoinstaller
@@ -70,8 +71,12 @@ def click_ok_button(driver):
 
 
 def download_petroleum_prices():
-    display = Display(visible=0, size=(1200, 1200))
-    display.start()
+    # Xvfb only exists on the Linux CI runner; headless Chrome needs no display
+    # locally (e.g. macOS), so only start the virtual display when available.
+    display = None
+    if shutil.which("Xvfb"):
+        display = Display(visible=0, size=(1200, 1200))
+        display.start()
 
     chromedriver_autoinstaller.install()
 
@@ -149,6 +154,8 @@ def download_petroleum_prices():
         return df_all
     finally:
         driver.quit()
+        if display:
+            display.stop()
 
 
 def run():

@@ -1,7 +1,7 @@
 import argparse
 
-from src.download_fuel_prices_csv import download_github_artifacts
-from src.retrieve_fuel_data import run as retrieve_fuel_data_run
+from fuel_prices.download_fuel_prices_csv import download_github_artifacts
+from fuel_prices.retrieve_fuel_data import run as retrieve_fuel_data_run
 
 
 def run(args):
@@ -15,7 +15,9 @@ def run(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--download", type=bool, help="True or False to download artifacts"
+        "--download",
+        action="store_true",
+        help="Download previously retrieved fuel price artifacts instead of scraping",
     )
     args = parser.parse_args()
     run(args)
