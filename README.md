@@ -1,8 +1,8 @@
 # Fuel prices retrieval
 
 Scrapes daily fuel prices per station from the Cyprus petroleum prices site and
-saves them as CSV (`data/fuel_prices_<date>.csv`). A GitHub Action runs the
-scraper twice a day and uploads the CSVs as artifacts.
+saves them as CSV (`data/fuel_prices_<date>_<HHMM>.csv`, UTC). A GitHub Action runs
+the scraper twice a day and commits each CSV to the `data` branch.
 
 ## Setup
 
@@ -15,7 +15,7 @@ pre-commit install
 
 ```bash
 python main.py              # scrape today's prices into data/
-GITHUB_TOKEN=... python main.py --download   # fetch past CSVs from GitHub artifacts
+python main.py --download   # copy all CSVs from the data branch into data/
 ```
 
 ## Layout

@@ -174,4 +174,6 @@ def run():
         print(f"Validation failed. Missing fuel types: {', '.join(missing_types)}")
     else:
         print("All fuel types are present.")
-    df.to_csv(f"data/fuel_prices_{pd.to_datetime('today').date()}.csv", index=False)
+    # Time in the name so the morning and evening runs don't overwrite each other.
+    stamp = pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%d_%H%M")
+    df.to_csv(f"data/fuel_prices_{stamp}.csv", index=False)
