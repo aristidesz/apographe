@@ -1,7 +1,7 @@
 import argparse
 
-from src.download_fuel_prices_csv import download_github_artifacts
-from src.retrieve_fuel_data import run as retrieve_fuel_data_run
+from fuel_prices.download_fuel_prices_csv import download_github_artifacts
+from fuel_prices.retrieve_fuel_data import run as retrieve_fuel_data_run
 
 
 def run(args):

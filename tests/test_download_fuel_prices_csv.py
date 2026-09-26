@@ -4,7 +4,7 @@ from unittest import mock
 
 import pytest
 
-import src.download_fuel_prices_csv as dl
+import fuel_prices.download_fuel_prices_csv as dl
 
 
 def test_missing_token_raises(monkeypatch):

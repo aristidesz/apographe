@@ -32,13 +32,13 @@ jobs:
           poetry install
 
       - name: Run flake8
-        run: poetry run flake8 src tests
+        run: poetry run flake8 fuel_prices tests main.py
 
       - name: Run black
         run: poetry run black --check .
 
       - name: Run bandit
-        run: poetry run bandit -r src
+        run: poetry run bandit -r fuel_prices
 
   test:
     runs-on: ubuntu-latest

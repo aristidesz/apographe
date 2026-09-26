@@ -29,3 +29,7 @@ repos:
       - id: black-jupyter
         # Use the default python version from the environment
         language_version: python3
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.8.1
+    hooks:
+      - id: nbstripout
