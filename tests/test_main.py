@@ -5,7 +5,7 @@ import main
 
 
 def test_download_flag_triggers_artifact_download():
-    with mock.patch("main.download_github_artifacts") as download, mock.patch(
+    with mock.patch("main.download_data") as download, mock.patch(
         "main.retrieve_fuel_data_run"
     ) as retrieve:
         main.run(argparse.Namespace(download=True))
@@ -15,7 +15,7 @@ def test_download_flag_triggers_artifact_download():
 
 
 def test_no_flag_triggers_scrape():
-    with mock.patch("main.download_github_artifacts") as download, mock.patch(
+    with mock.patch("main.download_data") as download, mock.patch(
         "main.retrieve_fuel_data_run"
     ) as retrieve:
         main.run(argparse.Namespace(download=False))
