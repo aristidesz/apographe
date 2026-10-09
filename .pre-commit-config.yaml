@@ -22,10 +22,14 @@ repos:
     rev: 1.7.10
     hooks:
       - id: bandit
-        args: ['-r', 'src']
+        exclude: '^tests/'
   - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 24.8.0
     hooks:
       - id: black-jupyter
         # Use the default python version from the environment
         language_version: python3
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.8.1
+    hooks:
+      - id: nbstripout

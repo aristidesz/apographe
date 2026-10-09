@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fuel_prices_retrieval"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["Aristides <10169524+aristidesz@users.noreply.github.com>"]
 readme = "README.md"
@@ -29,6 +29,11 @@ black = "^24.8.0"
 pandas-stubs = "^2.3.2.250926"
 types-beautifulsoup4 = "^4.12.0.20250516"
 types-requests = "^2.32.4.20250913"
+matplotlib = "^3.10.8"
+pdfplumber = "^0.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
 
 [build-system]
 requires = ["poetry-core"]

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
   pull_request:
     branches:
       - main
@@ -32,13 +33,13 @@ jobs:
           poetry install
 
       - name: Run flake8
-        run: poetry run flake8 src tests
+        run: poetry run flake8 fuel_prices tests main.py
 
       - name: Run black
         run: poetry run black --check .
 
       - name: Run bandit
-        run: poetry run bandit -r src
+        run: poetry run bandit -r fuel_prices
 
   test:
     runs-on: ubuntu-latest
@@ -65,8 +66,3 @@ jobs:
           poetry run coverage report
           poetry run coverage xml
 
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage.xml

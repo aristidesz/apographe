@@ -9,6 +9,8 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # push the CSV to the data branch
 
     steps:
       - name: Checkout code
@@ -32,8 +34,16 @@ jobs:
         run: |
           poetry run python main.py
 
-      - name: Upload outputs as artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: fuel_prices_outputs
-          path: data/*.csv
+      # Commit to the data branch instead of uploading an artifact: artifacts
+      # expire after 90 days and share the account's storage quota.
+      - name: Save CSV to data branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin data
+          git worktree add ../data-branch FETCH_HEAD
+          cp data/*.csv ../data-branch/
+          cd ../data-branch
+          git add *.csv
+          git commit -m "Fuel prices $(date -u +%F_%H%M)"
+          git push origin HEAD:data

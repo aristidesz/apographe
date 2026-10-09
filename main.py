@@ -1,13 +1,13 @@
 import argparse
 
-from src.download_fuel_prices_csv import download_github_artifacts
-from src.retrieve_fuel_data import run as retrieve_fuel_data_run
+from fuel_prices.download_fuel_prices_csv import download_data
+from fuel_prices.retrieve_fuel_data import run as retrieve_fuel_data_run
 
 
 def run(args):
 
     if args.download:
-        download_github_artifacts()
+        download_data()
     else:
         retrieve_fuel_data_run()
 
@@ -15,7 +15,9 @@ def run(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--download", type=bool, help="True or False to download artifacts"
+        "--download",
+        action="store_true",
+        help="Download all scraped CSVs from the data branch instead of scraping",
     )
     args = parser.parse_args()
     run(args)
