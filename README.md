@@ -25,8 +25,12 @@ once per fuel type, then convert the set into one CSV in the scraper's format:
 
 ```bash
 python main.py --download                                  # stations to match against
-python -m fuel_prices.pdf_to_csv ~/Downloads/*.pdf --data-dir data
+python -m fuel_prices.pdf_to_csv ~/Downloads --data-dir data   # or name the PDFs
 ```
+
+Given a folder, it takes only the observatory PDFs in it, writes one CSV per
+day it finds (PDFs saved over 30 minutes apart are separate snapshots), and
+leaves a CSV that already exists alone.
 
 Each station is matched to its existing spelling, and each fuel's average,
 cheapest and most expensive price are checked against the figures printed on

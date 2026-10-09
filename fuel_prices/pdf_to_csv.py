@@ -6,6 +6,11 @@ whole set, in exactly the scraper's format, so it sits on the data branch
 like any other run:
 
     python -m fuel_prices.pdf_to_csv path/to/*.pdf --data-dir data
+    python -m fuel_prices.pdf_to_csv ~/Downloads --data-dir data
+
+Given a folder, it takes every observatory PDF in it and skips the rest;
+PDFs saved more than 30 minutes apart become separate CSVs (one per day,
+typically), and a CSV that already exists is left alone.
 
 - Stations are matched to the scraper's own CSVs in --data-dir by brand and
   phone number (by brand, area and address when a station lists no phone),
@@ -15,7 +20,7 @@ like any other run:
 - Every fuel's average, cheapest and most expensive price are checked
   against the figures printed at the top of its PDF.
 - The time is when the PDFs were made, in UTC like the scraper's (the
-  earliest of the set); --stamp overrides it.
+  earliest of each snapshot); --stamp overrides it for a single snapshot.
 """
 
 from __future__ import annotations
@@ -27,7 +32,7 @@ import statistics
 import sys
 from collections import defaultdict
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 # The scraper's column order, and its fuel order (the site's dropdown).
@@ -182,42 +187,106 @@ def pdf_created(meta: dict) -> datetime | None:
     return datetime.strptime(m.group(1), "%Y%m%d%H%M%S").replace(tzinfo=timezone.utc)
 
 
-def convert(pdfs: list[Path], data_dir: Path, stamp: datetime | None) -> Path:
+# PDFs saved more than this far apart are separate snapshots (separate CSVs).
+SNAPSHOT_GAP = timedelta(minutes=30)
+
+
+@dataclass(frozen=True)
+class Page:
+    path: Path
+    fuel: str
+    created: datetime | None
+    text: str
+
+
+def read_pdf(path: Path) -> Page | None:
+    """The page's fuel type and text, or None if it isn't an observatory page."""
     import pdfplumber  # dev dependency, only needed here
 
-    known, nophone, brands = load_known(sorted(data_dir.glob("fuel_prices_*.csv")))
-    if not known:
-        raise SystemExit(f"no scraper CSVs in {data_dir}: run main.py --download")
+    with pdfplumber.open(path) as pdf:
+        text = "\n".join(page.extract_text() or "" for page in pdf.pages)
+        created = pdf_created(pdf.metadata)
+    criteria = re.search(r"Κριτήρια Αναζήτησης\n(.+)", text)
+    if not criteria:
+        return None
+    return Page(path, canonical_fuel(criteria.group(1)), created, text)
 
-    rows, created = [], []
-    for pdf_path in pdfs:
-        with pdfplumber.open(pdf_path) as pdf:
-            text = "\n".join(page.extract_text() or "" for page in pdf.pages)
-            when = pdf_created(pdf.metadata)
-        if when:
-            created.append(when)
-        criteria = re.search(r"Κριτήρια Αναζήτησης\n(.+)", text)
-        if not criteria:
-            raise ValueError(f"{pdf_path.name}: not a fuel price observatory page")
-        fuel = canonical_fuel(criteria.group(1))
-        stations = parse_stations(text.splitlines(), brands)
-        prices = [float(s.price.replace(",", ".")) for s in stations]
-        check_header(
-            fuel, [float(h.replace(",", ".")) for h in HEADER.findall(text)], prices
-        )
-        for s in stations:
-            address, area = match(s, known, nophone)
-            rows.append([s.brand, address, area, s.price.replace(",", "."), fuel])
-        print(f"{fuel}: {len(stations)} stations")
 
+def snapshots(pages: list[Page]) -> list[list[Page]]:
+    """Group PDFs into snapshots: saved within SNAPSHOT_GAP of each other, and
+    one PDF per fuel type. A folder holding several days' PDFs gives one
+    group per day."""
+    pages = sorted(pages, key=lambda p: (p.created is None, p.created or datetime.min))
+    groups: list[list[Page]] = []
+    for page in pages:
+        last = groups[-1] if groups else None
+        if (
+            last
+            and page.fuel not in {p.fuel for p in last}
+            and (
+                page.created is None
+                or last[-1].created is None
+                or page.created - last[-1].created <= SNAPSHOT_GAP
+            )
+        ):
+            last.append(page)
+        else:
+            groups.append([page])
+    return groups
+
+
+def collect(paths: list[Path]) -> list[Page]:
+    """PDFs named directly, plus every observatory PDF in folders named.
+    Other PDFs in a folder (a Downloads folder has plenty) are skipped."""
+    pages = []
+    for path in paths:
+        if path.is_dir():
+            found = [read_pdf(p) for p in sorted(path.glob("*.pdf"))]
+            pages += [p for p in found if p]
+            print(f"{path}: {sum(1 for p in found if p)} observatory PDFs")
+        else:
+            page = read_pdf(path)
+            if page is None:
+                raise ValueError(f"{path.name}: not a fuel price observatory page")
+            pages.append(page)
+    return pages
+
+
+def write_snapshot(
+    group: list[Page],
+    data_dir: Path,
+    known: Known,
+    nophone: NoPhone,
+    brands: set[str],
+    stamp: datetime | None,
+    force: bool,
+) -> Path | None:
+    created = [p.created for p in group if p.created]
     stamp = stamp or (min(created) if created else None)
     if stamp is None:
-        raise SystemExit("no creation time in the PDFs: pass --stamp")
+        raise ValueError("no creation time in the PDFs: pass --stamp")
+    out = data_dir / f"fuel_prices_{stamp:%Y-%m-%d_%H%M}.csv"
+    if out.exists() and not force:
+        print(f"{out.name}: already there, skipped (--force to rewrite)")
+        return None
+    missing = set(FUEL_TYPES) - {p.fuel for p in group}
+    if missing:
+        print(f"{out.name}: no PDF for {', '.join(sorted(missing))}")
+
+    rows = []
+    for page in group:
+        stations = parse_stations(page.text.splitlines(), brands)
+        prices = [float(s.price.replace(",", ".")) for s in stations]
+        header = [float(h.replace(",", ".")) for h in HEADER.findall(page.text)]
+        check_header(page.fuel, header, prices)
+        for s in stations:
+            address, area = match(s, known, nophone)
+            rows.append([s.brand, address, area, s.price.replace(",", "."), page.fuel])
+        print(f"  {page.fuel}: {len(stations)} stations ({page.path.name})")
     keys = [(r[0], r[1], r[4]) for r in rows]
     if len(keys) != len(set(keys)):
-        raise SystemExit("a station appears twice for one fuel: same PDF given twice?")
+        raise ValueError("a station appears twice for one fuel")
     rows.sort(key=lambda r: FUEL_TYPES.index(r[4]))  # stations keep page order
-    out = data_dir / f"fuel_prices_{stamp:%Y-%m-%d_%H%M}.csv"
     with out.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.writer(fh, lineterminator="\n")
         writer.writerow(COLUMNS)
@@ -227,18 +296,48 @@ def convert(pdfs: list[Path], data_dir: Path, stamp: datetime | None) -> Path:
     return out
 
 
+def convert(
+    paths: list[Path],
+    data_dir: Path,
+    stamp: datetime | None = None,
+    force: bool = False,
+) -> list[Path]:
+    known, nophone, brands = load_known(sorted(data_dir.glob("fuel_prices_*.csv")))
+    if not known:
+        raise SystemExit(f"no scraper CSVs in {data_dir}: run main.py --download")
+    groups = snapshots(collect(paths))
+    if not groups:
+        raise SystemExit("no fuel price observatory PDFs found")
+    if stamp and len(groups) > 1:
+        raise SystemExit(f"--stamp needs one snapshot; these PDFs make {len(groups)}")
+    written = []
+    for group in groups:
+        out = write_snapshot(group, data_dir, known, nophone, brands, stamp, force)
+        if out:
+            written.append(out)
+    return written
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    parser.add_argument("pdfs", nargs="+", type=Path, help="one PDF per fuel type")
+    parser.add_argument(
+        "pdfs",
+        nargs="+",
+        type=Path,
+        help="the PDFs (one per fuel type), or a folder holding them",
+    )
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
     parser.add_argument(
         "--stamp",
         type=lambda s: datetime.strptime(s, "%Y-%m-%d %H:%M"),
         help='UTC time of the snapshot, "YYYY-MM-DD HH:MM"',
     )
+    parser.add_argument(
+        "--force", action="store_true", help="rewrite a CSV that already exists"
+    )
     args = parser.parse_args(argv)
     try:
-        convert(args.pdfs, args.data_dir, args.stamp)
+        convert(args.pdfs, args.data_dir, args.stamp, args.force)
     except (LookupError, ValueError) as exc:
         sys.exit(f"stopped: {exc}")
 

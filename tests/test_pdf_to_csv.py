@@ -1,14 +1,18 @@
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pytest
 
 from fuel_prices.pdf_to_csv import (
+    FUEL_TYPES,
+    Page,
     Station,
     canonical_fuel,
     check_header,
     match,
     parse_stations,
     pdf_created,
+    snapshots,
 )
 
 BRANDS = {"ESSO", "ENI", "TOTAL PLUS", "ΑΝΕΞΑΡΤΗΤΟ ΠΡΑΤΗΡΙΟ", "JACKOSON"}
@@ -92,3 +96,23 @@ def test_a_station_whose_text_changed_takes_the_latest_spelling():
     }
     s = Station("EKO", "Κάτω Πύργος Τ.Κ 2940 Κάτω Πύργος", "1,769", None)
     assert match(s, {}, nophone) == ("Κάτω Πύργος Τ.Κ 2940", "Κάτω Πύργος")
+
+
+def _page(fuel, minute, day=1):
+    when = datetime(2026, 10, day, 16, minute, tzinfo=timezone.utc)
+    return Page(Path(f"{fuel}-{day}.pdf"), fuel, when, "")
+
+
+def test_a_folder_of_two_days_gives_two_snapshots():
+    day1 = [_page(f, i) for i, f in enumerate(FUEL_TYPES)]
+    day2 = [_page(f, i, day=2) for i, f in enumerate(FUEL_TYPES)]
+    groups = snapshots(day2 + day1)
+    assert [[p.path.name for p in g] for g in groups] == [
+        [p.path.name for p in day1],
+        [p.path.name for p in day2],
+    ]
+
+
+def test_the_same_fuel_twice_starts_a_new_snapshot():
+    groups = snapshots([_page("Κηροζίνη", 0), _page("Κηροζίνη", 2)])
+    assert len(groups) == 2
