@@ -1,68 +1,58 @@
-name: CI Pipeline
+name: CI
 
 on:
   push:
-    branches:
-      - main
-      - dev
+    branches: [main]
   pull_request:
-    branches:
-      - main
-      - dev
-      - feature/*
-      - releases/dev
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.11.8'
-
-      - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-
-      - name: Install dependencies
-        run: |
-          poetry install
-
-      - name: Run flake8
-        run: poetry run flake8 fuel_prices tests main.py
-
-      - name: Run black
-        run: poetry run black --check .
-
-      - name: Run bandit
-        run: poetry run bandit -r fuel_prices
+          python-version: "3.12"
+      - run: pipx install poetry
+      - run: poetry install --all-extras
+      - run: poetry run black --check src tests
+      - run: poetry run isort --check-only src tests
+      - run: poetry run flake8 src tests
+      - run: poetry run mypy
+      - run: poetry run bandit -q -r src
 
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python-version }}
+      - run: pipx install poetry
+      - run: poetry install --all-extras
+      - run: poetry run pytest --cov=apographe --cov-report=term-missing
 
-      - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-
-      - name: Install dependencies
-        run: |
-          poetry install
-
-      - name: Run tests
-        run: |
-          poetry run coverage run -m pytest
-          poetry run coverage report
-          poetry run coverage xml
-
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pipx install poetry
+      - run: poetry build
+      # The built wheel must install and run on its own, without the repo.
+      - run: |
+          python -m venv /tmp/wheel-check
+          /tmp/wheel-check/bin/pip install dist/*.whl
+          /tmp/wheel-check/bin/apographe list

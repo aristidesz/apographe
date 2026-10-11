@@ -1,0 +1,59 @@
+name: Release
+
+# Push a tag like v0.1.0 to publish that version to PyPI and create a GitHub
+# release. PyPI trusts this workflow directly ("trusted publishing"), so no
+# token is stored anywhere.
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pipx install poetry
+      - name: Tag matches the package version
+        run: |
+          version="$(poetry version --short)"
+          test "v$version" = "$GITHUB_REF_NAME" || {
+            echo "::error::tag $GITHUB_REF_NAME but pyproject.toml says $version"
+            exit 1
+          }
+      - run: poetry build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    needs: pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create "$GITHUB_REF_NAME" dist/*
+          --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --generate-notes

@@ -107,7 +107,8 @@ class _atomic:
         return self.fh
 
     def __exit__(self, exc_type, exc, tb) -> None:
-        assert self.fh is not None and self.file is not None
+        if self.fh is None or self.file is None:
+            return
         self.fh.close()  # also finishes the gzip stream, if any
         self.file.close()
         if exc_type is None:

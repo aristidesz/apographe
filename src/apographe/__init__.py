@@ -1,3 +1,8 @@
 """Apographe: collect public price data, source by source and day by day."""
 
-__version__ = "0.1.0.dev0"
+from importlib.metadata import PackageNotFoundError, version
+
+try:
+    __version__ = version("apographe")
+except PackageNotFoundError:  # running from a source tree that is not installed
+    __version__ = "0.0.0"
