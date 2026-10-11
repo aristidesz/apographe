@@ -12,18 +12,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.12"
-      - run: pipx install poetry
       - name: Tag matches the package version
         run: |
-          version="$(poetry version --short)"
+          version="$(uv version --short)"
           test "v$version" = "$GITHUB_REF_NAME" || {
             echo "::error::tag $GITHUB_REF_NAME but pyproject.toml says $version"
             exit 1
           }
-      - run: poetry build
+      - run: uv build
       - uses: actions/upload-artifact@v4
         with:
           name: dist

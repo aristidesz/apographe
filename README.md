@@ -105,9 +105,9 @@ reads.
 ## Development
 
 ```bash
-poetry install --all-extras
-pre-commit install
-poetry run pytest
+uv sync --all-extras
+uv run pre-commit install
+uv run pytest
 ```
 
 Tests run offline, against trimmed copies of real responses in
