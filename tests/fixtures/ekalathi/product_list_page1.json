@@ -1,0 +1,30 @@
+{
+ "last": true,
+ "totalElements": 3,
+ "totalPages": 2,
+ "size": 100,
+ "number": 1,
+ "first": true,
+ "numberOfElements": 100,
+ "empty": false,
+ "content": [
+  {
+   "productMasterId": 26,
+   "code": "10000026",
+   "name": "Galataki Chocolate Milk Charalambides Christis 250ml",
+   "startPrice": 0.65,
+   "previousPrice": 0.63,
+   "productCategoryName": "ΓΑΛΑ ΦΡΕΣΚΟ",
+   "productCategoryNameEnglish": "FRESH MILK",
+   "numberOfChains": 168,
+   "favorite": false,
+   "preferred": false,
+   "productMainPhotoFileId": 1802,
+   "productMainPhotoFileThumpId": 2571,
+   "notifiedAbout": false,
+   "hasBeenPurchased": false,
+   "toSendOffers": false,
+   "productThumbnailUrl": "https://e-kalathi.b-cdn.net/assets/img/products/10000026/10000026_thumb.png"
+  }
+ ]
+}

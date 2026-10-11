@@ -1,0 +1,48 @@
+{
+ "last": false,
+ "totalElements": 3,
+ "totalPages": 2,
+ "size": 100,
+ "number": 0,
+ "first": true,
+ "numberOfElements": 100,
+ "empty": false,
+ "content": [
+  {
+   "productMasterId": 2074,
+   "code": "10002074",
+   "name": "Kykkos 500ml",
+   "startPrice": 0.25,
+   "previousPrice": 0.23,
+   "productCategoryName": "ΝΕΡΟ",
+   "productCategoryNameEnglish": "WATER",
+   "numberOfChains": 115,
+   "favorite": false,
+   "preferred": false,
+   "productMainPhotoFileId": 1952,
+   "productMainPhotoFileThumpId": 2612,
+   "notifiedAbout": false,
+   "hasBeenPurchased": false,
+   "toSendOffers": false,
+   "productThumbnailUrl": "https://e-kalathi.b-cdn.net/assets/img/products/10002074/10002074_thumb.png"
+  },
+  {
+   "productMasterId": 1906,
+   "code": "10001906",
+   "name": "Twix 50g Twin",
+   "startPrice": 0.48,
+   "previousPrice": 0.55,
+   "productCategoryName": "ΣΟΚΟΛΑΤΕΣ ΚΑΙ ΣΟΚΟΛΑΤΑΚΙΑ",
+   "productCategoryNameEnglish": "CHOCOLATES",
+   "numberOfChains": 142,
+   "favorite": false,
+   "preferred": false,
+   "productMainPhotoFileId": 3783,
+   "productMainPhotoFileThumpId": 2918,
+   "notifiedAbout": false,
+   "hasBeenPurchased": false,
+   "toSendOffers": false,
+   "productThumbnailUrl": "https://e-kalathi.b-cdn.net/assets/img/products/10001906/10001906_thumb.png"
+  }
+ ]
+}

@@ -1,5 +1,6 @@
 import shutil
 import time
+from pathlib import Path
 
 import chromedriver_autoinstaller
 import pandas as pd
@@ -158,7 +159,8 @@ def download_petroleum_prices():
             display.stop()
 
 
-def run():
+def run(out_dir: Path = Path("data")) -> tuple[Path, int]:
+    """Scrape every fuel and write one CSV into ``out_dir``. Returns path, rows."""
     df = download_petroleum_prices()
     fuel_types = [
         "Αμόλυβδη 95",
@@ -176,4 +178,7 @@ def run():
         print("All fuel types are present.")
     # Time in the name so the morning and evening runs don't overwrite each other.
     stamp = pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%d_%H%M")
-    df.to_csv(f"data/fuel_prices_{stamp}.csv", index=False)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"fuel_prices_{stamp}.csv"
+    df.to_csv(path, index=False)
+    return path, len(df)

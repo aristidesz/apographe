@@ -1,0 +1,68 @@
+[
+ {
+  "id": 23,
+  "code": "4",
+  "name": "ΓΑΛΑ",
+  "nameEnglish": "MILK",
+  "productCategoryResponses": [
+   {
+    "id": 24,
+    "code": "00001",
+    "name": "ΓΑΛΑ ΦΡΕΣΚΟ",
+    "nameEnglish": "FRESH MILK"
+   }
+  ]
+ },
+ {
+  "id": 86,
+  "code": "66",
+  "name": "ΜΗ ΑΛΚΟΛΟΥΧΑ ΠΟΤΑ",
+  "nameEnglish": "NON-ALCOHOLIC DRINKS",
+  "productCategoryResponses": [
+   {
+    "id": 91,
+    "code": "00051",
+    "name": "ΑΝΑΨΥΚΤΙΚΑ ΚΑΙ ΣΟΔΕΣ",
+    "nameEnglish": "SOFT DRINKS AND SODA"
+   },
+   {
+    "id": 93,
+    "code": "00053",
+    "name": "ΚΑΦΕΣ ΚΥΠΡΙΑΚΟΣ",
+    "nameEnglish": "CYPRUS COFFEE"
+   },
+   {
+    "id": 94,
+    "code": "00054",
+    "name": "ΚΑΦΕΣ ΣΤΙΓΜΙΑΙΟΣ",
+    "nameEnglish": "INSTANT COFFEE"
+   },
+   {
+    "id": 87,
+    "code": "00047",
+    "name": "ΝΕΡΟ",
+    "nameEnglish": "WATER"
+   },
+   {
+    "id": 89,
+    "code": "00049",
+    "name": "ΧΥΜΟΙ ΦΡΟΥΤΩΝ ΚΑΙ ΛΑΧΑΝΙΚΩΝ",
+    "nameEnglish": "FRUIT AND VEGETABLE JUICES"
+   }
+  ]
+ },
+ {
+  "id": 80,
+  "code": "61",
+  "name": "ΣΟΚΟΛΑΤΕΣ ΚΑΙ ΣΟΚΟΛΑΤΑΚΙΑ",
+  "nameEnglish": "CHOCOLATES",
+  "productCategoryResponses": [
+   {
+    "id": 139,
+    "code": "00043",
+    "name": "ΣΟΚΟΛΑΤΕΣ ΚΑΙ ΣΟΚΟΛΑΤΑΚΙΑ",
+    "nameEnglish": "CHOCOLATES"
+   }
+  ]
+ }
+]
