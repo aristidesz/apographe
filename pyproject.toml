@@ -1,27 +1,47 @@
-[tool.poetry]
-name = "fuel_prices_retrieval"
-version = "0.2.0"
-description = ""
-authors = ["Aristides <10169524+aristidesz@users.noreply.github.com>"]
+[project]
+name = "apographe"
+version = "0.1.0.dev0"
+description = "Collect public price data, source by source and day by day."
+authors = [{ name = "Aristides Zenonos", email = "10169524+aristidesz@users.noreply.github.com" }]
 readme = "README.md"
-package-mode = false
+license = "MIT"
+requires-python = ">=3.11"
+keywords = ["open-data", "prices", "web-scraping", "time-series", "cyprus"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = ["requests>=2.31"]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-selenium = "^4.36.0"
-bs4 = "^0.0.2"
-pandas = "^2.3.3"
-numpy = "^2.1.2"
-webdriver-manager = "^4.0.2"
-chromedriver-autoinstaller = "^0.6.4"
-pyvirtualdisplay = "^3.0"
+[project.optional-dependencies]
+# The Cyprus fuel observatory needs a real browser to fill its form.
+cy-fuel = [
+    "selenium>=4.36",
+    "beautifulsoup4>=4.12",
+    "pandas>=2.2",
+    "chromedriver-autoinstaller>=0.6.4",
+    "pyvirtualdisplay>=3.0",
+    "pdfplumber>=0.11",
+]
+
+[project.scripts]
+apographe = "apographe.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/aristidesz/apographe"
+Issues = "https://github.com/aristidesz/apographe/issues"
+
+[tool.poetry]
+packages = [{ include = "apographe", from = "src" }]
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.12.0"
 bandit = "^1.7.10"
 pre-commit = "^4.0.1"
 pytest = "^8.3.3"
-coverage = "^7.6.3"
 pytest-cov = "^5.0.0"
 isort = "^5.11.2"
 flake8 = "7.1.1"
@@ -29,12 +49,18 @@ black = "^24.8.0"
 pandas-stubs = "^2.3.2.250926"
 types-beautifulsoup4 = "^4.12.0.20250516"
 types-requests = "^2.32.4.20250913"
-matplotlib = "^3.10.8"
-pdfplumber = "^0.11"
 
 [tool.pytest.ini_options]
-pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src"]
+ignore_missing_imports = true
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0"]
 build-backend = "poetry.core.masonry.api"

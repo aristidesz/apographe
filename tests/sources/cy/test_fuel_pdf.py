@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from fuel_prices import pdf_to_csv as conv
+from apographe.sources.cy.fuel import pdf as conv
 
 BRANDS = {"ESSO", "ENI", "TOTAL PLUS", "ΑΝΕΞΑΡΤΗΤΟ ΠΡΑΤΗΡΙΟ", "JACKOSON"}
 

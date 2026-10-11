@@ -1,13 +1,13 @@
 import pytest
 
-from fuel_prices.retrieve_fuel_data import extract_station_table
+from apographe.sources.cy.fuel.scraper import extract_station_table
 
 
 @pytest.fixture(autouse=True)
 def _no_sleep(monkeypatch):
     # extract_station_table calls time.sleep(2) twice; neutralise it so the
     # pure-parsing tests run instantly and deterministically.
-    monkeypatch.setattr("fuel_prices.retrieve_fuel_data.time.sleep", lambda *_: None)
+    monkeypatch.setattr("apographe.sources.cy.fuel.scraper.time.sleep", lambda *_: None)
 
 
 def _station_html(brand, address, area, price):

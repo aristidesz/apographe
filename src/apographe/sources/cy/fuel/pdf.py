@@ -5,8 +5,8 @@ browser (one PDF per fuel type) can fill the gap. This writes one CSV for the
 whole set, in exactly the scraper's format, so it sits on the data branch
 like any other run:
 
-    python -m fuel_prices.pdf_to_csv path/to/*.pdf --data-dir data
-    python -m fuel_prices.pdf_to_csv ~/Downloads --data-dir data
+    python -m apographe.sources.cy.fuel.pdf path/to/*.pdf --data-dir data
+    python -m apographe.sources.cy.fuel.pdf ~/Downloads --data-dir data
 
 Given a folder, it takes every observatory PDF in it and skips the rest;
 PDFs saved more than 30 minutes apart become separate CSVs (one per day,
@@ -304,7 +304,7 @@ def convert(
 ) -> list[Path]:
     known, nophone, brands = load_known(sorted(data_dir.glob("fuel_prices_*.csv")))
     if not known:
-        raise SystemExit(f"no scraper CSVs in {data_dir}: run main.py --download")
+        raise SystemExit(f"no scraper CSVs in {data_dir}: fetch the fuel CSVs first")
     groups = snapshots(collect(paths))
     if not groups:
         raise SystemExit("no fuel price observatory PDFs found")
