@@ -1,6 +1,6 @@
 [project]
 name = "apographe"
-version = "0.1.0.dev0"
+version = "0.1.0"
 description = "Collect public price data, source by source and day by day."
 authors = [{ name = "Aristides Zenonos", email = "10169524+aristidesz@users.noreply.github.com" }]
 readme = "README.md"
@@ -12,6 +12,10 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
     "Topic :: Scientific/Engineering :: Information Analysis",
 ]
 dependencies = ["requests>=2.31"]
@@ -32,6 +36,8 @@ apographe = "apographe.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/aristidesz/apographe"
+Documentation = "https://github.com/aristidesz/apographe/tree/main/docs"
+Changelog = "https://github.com/aristidesz/apographe/blob/main/CHANGELOG.md"
 Issues = "https://github.com/aristidesz/apographe/issues"
 
 [dependency-groups]
@@ -63,6 +69,10 @@ select = ["E", "W", "F", "I"]
 python_version = "3.11"
 files = ["src"]
 ignore_missing_imports = true
+
+[tool.hatch.build.targets.sdist]
+# What goes in the source archive on PyPI: the package, its tests and docs.
+include = ["src", "tests", "docs", "README.md", "LICENSE", "CHANGELOG.md"]
 
 [build-system]
 requires = ["hatchling>=1.25"]

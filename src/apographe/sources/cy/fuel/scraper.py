@@ -85,9 +85,9 @@ def download_petroleum_prices():
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--window-size=1200,1200")
     chrome_options.add_argument("--disable-gpu")
+    # Chrome's sandbox does not start inside CI containers.
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--ignore-certificate-errors")
 
     driver = webdriver.Chrome(options=chrome_options)
 

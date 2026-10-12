@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## 0.1.0
 
 First release as Apographe. The project began as `fuel_prices_retrieval`
 (v0.2.0), a scraper for Cyprus fuel prices, and grew into a framework for

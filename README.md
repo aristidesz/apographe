@@ -26,7 +26,7 @@ cy.ekalathi store-prices: 143 rows -> stores
 | `cy.ekalathi` | Cyprus supermarket prices from [e-kalathi.gov.cy](https://www.e-kalathi.gov.cy): every product, in every store | daily, per store; cheapest-price history since Sep 2025 |
 | `cy.fuel` | Cyprus fuel prices at every petrol station, from the Ministry's [fuel price observatory](https://eforms.eservices.cyprus.gov.cy/MCIT/MCIT/PetroleumPrices) | per station, as often as you run it |
 
-Want your country here? See [Adding a source](docs/adding-a-source.md): a
+Want your country here? See [Adding a source](https://github.com/aristidesz/apographe/blob/main/docs/adding-a-source.md): a
 source is one class with a few jobs.
 
 ## Quick start
@@ -64,7 +64,7 @@ data/cy/ekalathi/
 
 Tables join on their ids: a store price points to a product and a store, a
 store to its chain and region. The e-kalathi page in
-[docs/sources](docs/sources/cy-ekalathi.md) shows each table with real rows.
+[docs/sources](https://github.com/aristidesz/apographe/blob/main/docs/sources/cy-ekalathi.md) shows each table with real rows.
 
 ## Collecting every day
 
