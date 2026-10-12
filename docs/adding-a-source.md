@@ -11,16 +11,18 @@ from apographe.core.storage import Store
 
 
 class ExampleFuelSource(Source):
-    id = "xx.fuel"                      # country code, then a short name
+    id = "xx.fuel"  # country code, then a short name
     title = "Example fuel prices"
-    country = "XX"                      # ISO 3166-1 alpha-2
+    country = "XX"  # ISO 3166-1 alpha-2
     homepage = "https://fuel.example.gov"
-    timezone = "Europe/Athens"          # "today" is taken here
+    timezone = "Europe/Athens"  # "today" is taken here
     jobs = {"prices": "every station's prices, now"}
     default_jobs = ("prices",)
 
     def run(self, job: str, out: Store, options: Options) -> Report:
-        http = PoliteClient("https://fuel.example.gov/api", min_interval=options.delay or 3)
+        http = PoliteClient(
+            "https://fuel.example.gov/api", min_interval=options.delay or 3
+        )
         stations = http.get_json("/stations")
         day = options.day.isoformat()
         rows = [
@@ -29,7 +31,9 @@ class ExampleFuelSource(Source):
         ]
         report = Report()
         path, count = out.write_csv(
-            f"prices/{day[:4]}/{day}.csv.gz", rows, ["date", "station_id", "fuel", "price"]
+            f"prices/{day[:4]}/{day}.csv.gz",
+            rows,
+            ["date", "station_id", "fuel", "price"],
         )
         report.add("prices", count, path)
         return report
@@ -37,17 +41,9 @@ class ExampleFuelSource(Source):
 
 ## Shipping it
 
-**Inside Apographe:** put the module under `src/apographe/sources/<country>/`,
-add it to `BUILT_IN` in `src/apographe/core/registry.py`, add tests with a few
-trimmed real responses under `tests/fixtures/`, and open a pull request.
-
-**As your own package:** register it under the `apographe.sources` entry point,
-and `apographe list` finds it once the package is installed:
-
-```toml
-[project.entry-points."apographe.sources"]
-"xx.fuel" = "apographe_xx.fuel:ExampleFuelSource"
-```
+Put the module under `src/apographe/sources/<country>/`, add it to `BUILT_IN`
+in `src/apographe/core/registry.py`, add tests with a few trimmed real responses
+under `tests/fixtures/`, and open a pull request.
 
 ## Conventions
 

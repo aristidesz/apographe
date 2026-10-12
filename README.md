@@ -3,8 +3,8 @@
 *ἀπογραφή (apographḗ): a register, the official record of what was counted.*
 
 Apographe collects public price data, source by source and day by day, and
-writes it as plain CSV you can analyse with anything. Each source is a small
-plug-in; the framework handles the polite fetching, retries, resumable runs and
+writes it as plain CSV you can analyse with anything. Each source is one small
+class; the framework handles the polite fetching, retries, resumable runs and
 tidy files.
 
 ```console
