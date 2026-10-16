@@ -194,7 +194,7 @@ def parse_response(
     xml_text: str, fetched_at: str, fuel_type: int
 ) -> list[dict[str, Any]]:
     try:
-        root = ET.fromstring(xml_text.lstrip("﻿").encode("utf-8"))
+        root = ET.fromstring(xml_text.lstrip("\ufeff").encode("utf-8"))
     except ET.ParseError as exc:
         raise SourceError("the fuel API did not return valid XML") from exc
     reply = root.find(".//m:PetroleumPriceResponseMob", NS)
