@@ -18,7 +18,7 @@ classifiers = [
     "Typing :: Typed",
     "Topic :: Scientific/Engineering :: Information Analysis",
 ]
-dependencies = ["requests>=2.31"]
+dependencies = ["requests>=2.31", "defusedxml>=0.7"]
 
 [project.optional-dependencies]
 # The Cyprus fuel observatory needs a real browser to fill its form.

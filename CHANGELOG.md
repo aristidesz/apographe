@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- `cy.fuel`: new `api` job, reading every station's price from the official
+  CY Connect API (OAuth 2.0 client credentials from environment variables).
+  Sandbox answers go to their own folder.
+- `defusedxml` is now a dependency, for reading the API's XML.
+
 ## 0.1.0
 
 First release as Apographe. The project began as `fuel_prices_retrieval`
