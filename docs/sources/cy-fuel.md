@@ -35,22 +35,25 @@ price. Access is by approval; see the steps below.
 ```bash
 export CYCONNECT_CLIENT_ID=...
 export CYCONNECT_CLIENT_SECRET=...
+export CYCONNECT_TOKEN_URL=...
+export CYCONNECT_API_URL=...
 export CYCONNECT_ENV=sandbox        # or production
 apographe run cy.fuel --job api --out data
 ```
 
 | Variable | |
 |---|---|
-| `CYCONNECT_CLIENT_ID` | Required. The client id from CDS Support. |
-| `CYCONNECT_CLIENT_SECRET` | Required. The client secret from CDS Support. |
-| `CYCONNECT_ENV` | `sandbox` (default) or `production`. Chooses which API and output folder. |
+| `CYCONNECT_CLIENT_ID` | Required. Your application's client id. |
+| `CYCONNECT_CLIENT_SECRET` | Required. Your application's client secret. |
+| `CYCONNECT_TOKEN_URL` | Required. The sign-in address, from the CY Connect onboarding package. |
+| `CYCONNECT_API_URL` | Required. The fuel API address, from the same package. |
+| `CYCONNECT_ENV` | `sandbox` (default) or `production`. Only chooses the output folder. |
 
 Instead of `export`, you can keep them in a file and use
-`--env-file .env.production`.
-
-`--only 1 3` asks for some fuels only (1 Unleaded 95, 2 Unleaded 98, 3 Diesel,
-4 Heating diesel, 5 Kerosene). The credentials come from the environment and
-are never written to disk or printed. One run signs in once and makes five calls.
+`--env-file .env.production`. `--only 1 3` asks for some fuels only (1 Unleaded
+95, 2 Unleaded 98, 3 Diesel, 4 Heating diesel, 5 Kerosene). The credentials come
+from the environment and are never written to disk or printed. One run signs in
+once and makes five calls.
 
 Columns: `fetched_at, fuel_type_id, fuel_type, company_code, company,
 station_code, station_name, phone, city, district, address, price,
@@ -61,18 +64,17 @@ price_changed_at, lat, lon, offline`.
 
 ### Getting access
 
-1. Ask the Consumer Protection Service for approval (they own the data).
-2. Send CDS Support (`cds-support@dits.dmrid.gov.cy`) the CY Connect
-   *Access Requirements* and *Consume API Requirements* forms. Individuals can
-   apply too.
-3. Activate your Developer Portal account, then request the API on your
-   application: Applications, your app, Edit, APIs, add *MECI Petroleum Prices
-   for Mobile Apps API - DIS Legacy*, accept the terms, Save.
-4. Once approved, test in the sandbox, then ask for a separate Production
-   application.
+Apographe does not include the API's addresses or sample data: they belong to
+the government's API gateway (CY Connect) and come with your approval.
 
-The terms forbid reselling or redistributing what the API returns, so keep
-collected prices private.
+1. Ask the Consumer Protection Service, who own the data, for approval.
+2. Apply to CDS Support, the CY Connect support team. Individuals can apply too.
+3. Once you are approved, activate your Developer Portal account and add the
+   fuel prices API to your application in the API Hub.
+4. Test in the sandbox, then ask for a separate production application.
+
+The terms forbid redistributing what the API returns, so keep collected data
+private.
 
 ## Filling a missed day from saved PDFs
 

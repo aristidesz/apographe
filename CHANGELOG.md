@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- `cy.fuel api`: the endpoints now come from `CYCONNECT_TOKEN_URL` and
+  `CYCONNECT_API_URL` (from the CY Connect onboarding package) instead of the
+  code.
 - `apographe info SOURCE` shows a source's jobs and the environment variables
   and extras each needs; `apographe list` marks them. A job with a missing
   variable now stops early and names it. `apographe run --env-file PATH` reads

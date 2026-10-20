@@ -30,9 +30,18 @@ class FuelSource(Source):
     env = {
         "CYCONNECT_CLIENT_ID": "CY Connect client id (from CDS Support)",
         "CYCONNECT_CLIENT_SECRET": "CY Connect client secret (from CDS Support)",  # nosec B105
-        "CYCONNECT_ENV": "sandbox (default) or production",
+        "CYCONNECT_TOKEN_URL": "token address (from the CY Connect onboarding package)",
+        "CYCONNECT_API_URL": "API address (from the CY Connect onboarding package)",
+        "CYCONNECT_ENV": "sandbox (default) or production: chooses the output folder",
     }
-    job_env = {"api": ("CYCONNECT_CLIENT_ID", "CYCONNECT_CLIENT_SECRET")}
+    job_env = {
+        "api": (
+            "CYCONNECT_CLIENT_ID",
+            "CYCONNECT_CLIENT_SECRET",
+            "CYCONNECT_TOKEN_URL",
+            "CYCONNECT_API_URL",
+        )
+    }
     extras = {"prices": "cy-fuel", "pdf": "cy-fuel"}
 
     def __init__(

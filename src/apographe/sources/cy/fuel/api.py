@@ -67,32 +67,18 @@ class Environment:
         return "api" if self.name == "production" else f"api-{self.name}"
 
 
-ENVIRONMENTS = {
-    "sandbox": Environment(
-        "sandbox",
-        "https://sandbox-apis.cyconnect.cyprus.gov.cy/auth/oauth/v2/token",
-        "https://sandbox-apis.cyconnect.cyprus.gov.cy"
-        "/legacysubmission/request/PBL_MCIT_Petrol_PricesMob",
-    ),
-    "production": Environment(
-        "production",
-        "https://apis.cyconnect.cyprus.gov.cy/auth/oauth/v2/token",
-        "https://apis.cyconnect.cyprus.gov.cy"
-        "/legacysubmission/request/PBL_MCIT_Petrol_PricesMob",
-    ),
-}
-
-
 def settings_from_env(
     env: Mapping[str, str] | None = None,
 ) -> tuple[Environment, str, str]:
-    """Which environment to call, and the client id and secret to call it with.
+    """Where to call, and the client id and secret to call it with.
 
-    CYCONNECT_ENV is ``sandbox`` (the default) or ``production``.
+    CYCONNECT_TOKEN_URL and CYCONNECT_API_URL come from the CY Connect
+    onboarding package. CYCONNECT_ENV is ``sandbox`` (the default) or
+    ``production``; it only chooses the output folder.
     """
     env = os.environ if env is None else env
     name = env.get("CYCONNECT_ENV", "sandbox").strip().lower()
-    if name not in ENVIRONMENTS:
+    if name not in ("sandbox", "production"):
         raise SourceError("CYCONNECT_ENV must be 'sandbox' or 'production'")
     client_id = env.get("CYCONNECT_CLIENT_ID", "").strip()
     secret = env.get("CYCONNECT_CLIENT_SECRET", "").strip()
@@ -101,7 +87,14 @@ def settings_from_env(
             "set CYCONNECT_CLIENT_ID and CYCONNECT_CLIENT_SECRET "
             "(the credentials of your CY Connect application)"
         )
-    return ENVIRONMENTS[name], client_id, secret
+    token_url = env.get("CYCONNECT_TOKEN_URL", "").strip()
+    api_url = env.get("CYCONNECT_API_URL", "").strip()
+    if not token_url or not api_url:
+        raise SourceError(
+            "set CYCONNECT_TOKEN_URL and CYCONNECT_API_URL "
+            "(the addresses in your CY Connect onboarding package)"
+        )
+    return Environment(name, token_url, api_url), client_id, secret
 
 
 def build_request(fuel_type: int) -> str:

@@ -1,5 +1,5 @@
-"""cy.fuel through the official API, offline: the answer is a trimmed copy of the
-sample response CY Connect publishes (test data from 2015-2021, not real prices)."""
+"""cy.fuel through the official API, offline: the answer is invented data in the
+shape of the API's answer."""
 
 import gzip
 from datetime import datetime
@@ -19,6 +19,9 @@ SAMPLE = (
     Path(__file__).parents[2] / "fixtures" / "fuel_api" / "response_unleaded95.xml"
 ).read_text(encoding="utf-8")
 SECRET = "s3cr3t-value"
+TOKEN_URL = "https://auth.example.invalid/token"
+API_URL = "https://api.example.invalid/fuel"
+URLS = {"CYCONNECT_TOKEN_URL": TOKEN_URL, "CYCONNECT_API_URL": API_URL}
 NOW = datetime(2026, 10, 16, 15, 30, 5, tzinfo=ZoneInfo("Asia/Nicosia"))
 
 
@@ -57,14 +60,14 @@ def clock_from(times):
 
 def make_api(token_replies, api_replies, **kw):
     creds = ClientCredentials(
-        api.ENVIRONMENTS["sandbox"].token_url,
+        TOKEN_URL,
         "client-1",
         SECRET,
         session=Session(token_replies),
     )
     http = Session(api_replies)
     fuel_api = api.FuelApi(
-        api.ENVIRONMENTS["sandbox"],
+        api.Environment("sandbox", TOKEN_URL, API_URL),
         creds,
         session=http,
         sleep=lambda s: None,
@@ -80,13 +83,13 @@ def test_stations_become_rows():
     rows = api.parse_response(SAMPLE, "2026-10-16T15:30:05+03:00", 1)
     assert len(rows) == 5
     first = rows[0]
-    assert first["company"] == "ESSO" and first["station_code"] == "ES052"
-    assert first["station_name"] == "ΑΔΕΛΦΟΙ ΚΟΥΡΙΔΗ ΛΙΜΙΤΕΔ"  # quotes removed
-    assert first["phone"] == "26933657"
-    assert first["address"] == "Ευαγόρα Παλληκαρίδη 53 Τ.Κ 8010 τηλ: 26933657"
-    assert (first["price"], first["offline"]) == ("1.327", "false")
-    assert first["price_changed_at"] == "2018-10-08T06:02:00"
-    assert (first["lat"], first["lon"]) == (34.777998, 32.423667)
+    assert first["company"] == "ACME OIL" and first["station_code"] == "XA001"
+    assert first["station_name"] == "SAMPLE TRADING LIMITED"  # quotes removed
+    assert first["phone"] == "22000001"
+    assert first["address"] == "1 Example Street Τ.Κ 1000 τηλ: 22000001"
+    assert (first["price"], first["offline"]) == ("1.234", "false")
+    assert first["price_changed_at"] == "2026-10-08T06:02:00"
+    assert (first["lat"], first["lon"]) == (34.123457, 32.987654)
     assert first["fuel_type_id"] == 1 and first["fuel_type"] == "Αμόλυβδη 95"
     assert set(first) == set(api.FIELDS)
 
@@ -163,19 +166,25 @@ def test_refused_credentials_are_explained_without_showing_the_secret():
 
 def test_settings_come_from_the_environment():
     env, client_id, secret = api.settings_from_env(
-        {"CYCONNECT_CLIENT_ID": " id ", "CYCONNECT_CLIENT_SECRET": "sec"}
+        {"CYCONNECT_CLIENT_ID": " id ", "CYCONNECT_CLIENT_SECRET": "sec", **URLS}
     )
     assert env.name == "sandbox" and (client_id, secret) == ("id", "sec")
+    assert (env.token_url, env.api_url) == (TOKEN_URL, API_URL)
     prod, *_ = api.settings_from_env(
         {
             "CYCONNECT_ENV": "Production",
             "CYCONNECT_CLIENT_ID": "id",
             "CYCONNECT_CLIENT_SECRET": "sec",
+            **URLS,
         }
     )
     assert prod.name == "production" and prod.folder == "api"
     with pytest.raises(SourceError, match="CYCONNECT_CLIENT_SECRET"):
         api.settings_from_env({"CYCONNECT_CLIENT_ID": "id"})
+    with pytest.raises(SourceError, match="CYCONNECT_TOKEN_URL.*onboarding"):
+        api.settings_from_env(
+            {"CYCONNECT_CLIENT_ID": "id", "CYCONNECT_CLIENT_SECRET": "sec"}
+        )
     with pytest.raises(SourceError, match="'sandbox' or 'production'"):
         api.settings_from_env({"CYCONNECT_ENV": "test"})
 
@@ -188,7 +197,7 @@ def test_a_call_carries_the_token_and_the_xml():
     rows = fuel_api.prices(1, "t")
     assert len(rows) == 5
     url, kw = http.calls[0]
-    assert url == api.ENVIRONMENTS["sandbox"].api_url
+    assert url == API_URL
     assert kw["headers"]["Authorization"] == "Bearer tok-1"
     assert kw["headers"]["Content-Type"] == "application/xml"
     assert b"<PetroleumType>1</PetroleumType>" in kw["data"]
