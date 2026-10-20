@@ -39,6 +39,15 @@ export CYCONNECT_ENV=sandbox        # or production
 apographe run cy.fuel --job api --out data
 ```
 
+| Variable | |
+|---|---|
+| `CYCONNECT_CLIENT_ID` | Required. The client id from CDS Support. |
+| `CYCONNECT_CLIENT_SECRET` | Required. The client secret from CDS Support. |
+| `CYCONNECT_ENV` | `sandbox` (default) or `production`. Chooses which API and output folder. |
+
+Instead of `export`, you can keep them in a file and use
+`--env-file .env.production`.
+
 `--only 1 3` asks for some fuels only (1 Unleaded 95, 2 Unleaded 98, 3 Diesel,
 4 Heating diesel, 5 Kerosene). The credentials come from the environment and
 are never written to disk or printed. One run signs in once and makes five calls.

@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
+import os
 from collections.abc import Callable, Sequence
 from datetime import date, datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from apographe.core import registry
-from apographe.core.source import Options, Report, Source
+from apographe.core.source import Options, Report, Source, SourceError
 from apographe.core.storage import Store
 
 
@@ -48,9 +49,11 @@ def run(
 
     Raises:
         ValueError: a job the source does not have.
+        SourceError: an environment variable a job needs is not set (the
+            message names the variables, never their values), or the site
+            did not answer as expected.
         KeyError: an unknown source id.
         LoginWall: the site now asks for a login, so nothing was collected.
-        SourceError: the site did not answer as expected.
 
     Run a built-in source::
 
@@ -97,6 +100,13 @@ def run(
             f"{source.id} has no job {', '.join(unknown)}; "
             f"its jobs: {', '.join(source.jobs)}"
         )
+    for job in jobs:
+        missing = [v for v in source.job_env.get(job, ()) if not os.environ.get(v)]
+        if missing:
+            raise SourceError(
+                f"{source.id} {job} needs {', '.join(missing)} "
+                f"(see `apographe info {source.id}`)"
+            )
     if day is None:
         day = datetime.now(ZoneInfo(source.timezone)).date()
     elif isinstance(day, str):

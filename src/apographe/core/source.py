@@ -68,6 +68,9 @@ class Source(ABC):
     timezone: ClassVar[str] = "UTC"  # the day a run belongs to is taken here
     jobs: ClassVar[dict[str, str]]  # job name -> one-line description
     default_jobs: ClassVar[tuple[str, ...]]  # what `apographe run <id>` does
+    env: ClassVar[dict[str, str]] = {}  # variable -> what it is
+    job_env: ClassVar[dict[str, tuple[str, ...]]] = {}  # job -> variables it needs
+    extras: ClassVar[dict[str, str]] = {}  # job -> pip extra it needs
 
     @property
     def folder(self) -> str:

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- `apographe info SOURCE` shows a source's jobs and the environment variables
+  and extras each needs; `apographe list` marks them. A job with a missing
+  variable now stops early and names it. `apographe run --env-file PATH` reads
+  `KEY=VALUE` lines for one run. `--help` has examples.
 - Use it from Python: `from apographe import run` collects a source into dated
   files, and the main classes (`Source`, `Store`, `PoliteClient`, ...) are
   exported. `apographe run` now calls it.
