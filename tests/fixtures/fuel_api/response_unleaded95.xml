@@ -1,6 +1,6 @@
 <Message xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://gateway.gov/schema/common/v1">
     <Header>
-        <Vendor>Ariadni Team</Vendor>
+        <Vendor>Example</Vendor>
     </Header>
     <Body>
         <PetroleumPriceResponseMob xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Success="true" Code="100" xmlns="http://gateway.gov/schema/mcit/v1">
@@ -8,77 +8,77 @@
             <PetroleumType>Αμόλυβδη 95</PetroleumType>
             <PetroleumPriceDetailsCollectionMob>
                 <PetroleumPriceDetails1>
-                    <FuelCompanyCode>ES</FuelCompanyCode>
-                    <fuel_company_name>ESSO</fuel_company_name>
-                    <station_code>ES052</station_code>
-                    <station_name>"ΑΔΕΛΦΟΙ ΚΟΥΡΙΔΗ ΛΙΜΙΤΕΔ"</station_name>
-                    <station_tel_no>26933657            </station_tel_no>
+                    <FuelCompanyCode>XA</FuelCompanyCode>
+                    <fuel_company_name>ACME OIL</fuel_company_name>
+                    <station_code>XA001</station_code>
+                    <station_name>"SAMPLE TRADING LIMITED"</station_name>
+                    <station_tel_no>22000001            </station_tel_no>
                     <station_city>ΠΑΦΟΣ</station_city>
                     <station_district>Πάφος</station_district>
-                    <station_address1>Ευαγόρα Παλληκαρίδη 53 Τ.Κ 8010
- τηλ: 26933657</station_address1>
-                    <price_modification_date>2018-10-08T06:02:00</price_modification_date>
-                    <Fuel_Price>1.327</Fuel_Price>
-                    <map_coordinates>34.7779977652251,32.4236665755325</map_coordinates>
+                    <station_address1>1 Example Street Τ.Κ 1000
+ τηλ: 22000001</station_address1>
+                    <price_modification_date>2026-10-08T06:02:00</price_modification_date>
+                    <Fuel_Price>1.234</Fuel_Price>
+                    <map_coordinates>34.123456789,32.987654321</map_coordinates>
                     <isOffLine>false</isOffLine>
                 </PetroleumPriceDetails1>
                 <PetroleumPriceDetails1>
-                    <FuelCompanyCode>ES</FuelCompanyCode>
-                    <fuel_company_name>ESSO</fuel_company_name>
-                    <station_code>ES029</station_code>
-                    <station_name>A &amp; K PAVLOU TRADING LIMITED</station_name>
-                    <station_tel_no>25562279            </station_tel_no>
+                    <FuelCompanyCode>XA</FuelCompanyCode>
+                    <fuel_company_name>ACME OIL</fuel_company_name>
+                    <station_code>XA002</station_code>
+                    <station_name>A &amp; B EXAMPLE LIMITED</station_name>
+                    <station_tel_no>22000002            </station_tel_no>
                     <station_city>ΛΕΜΕΣΟΣ</station_city>
                     <station_district>Λεμεσός</station_district>
-                    <station_address1>Πάφου 21 Τ.Κ 3052
- τηλ: 25562279</station_address1>
-                    <price_modification_date>2018-10-06T05:57:00</price_modification_date>
-                    <Fuel_Price>1.329</Fuel_Price>
-                    <map_coordinates>34.6744035108073,33.013875861377</map_coordinates>
+                    <station_address1>2 Example Avenue Τ.Κ 1001
+ τηλ: 22000002</station_address1>
+                    <price_modification_date>2026-10-06T05:57:00</price_modification_date>
+                    <Fuel_Price>1.241</Fuel_Price>
+                    <map_coordinates>34.5,33.1</map_coordinates>
                     <isOffLine>false</isOffLine>
                 </PetroleumPriceDetails1>
                 <PetroleumPriceDetails1>
-                    <FuelCompanyCode>LU</FuelCompanyCode>
-                    <fuel_company_name>LUKOIL</fuel_company_name>
-                    <station_code>LU001</station_code>
-                    <station_name>ALIOSA TRADING LIMITED</station_name>
-                    <station_tel_no>22778752            </station_tel_no>
+                    <FuelCompanyCode>XB</FuelCompanyCode>
+                    <fuel_company_name>BETA FUEL</fuel_company_name>
+                    <station_code>XB001</station_code>
+                    <station_name>SAMPLE STATION THREE LIMITED</station_name>
+                    <station_tel_no>22000003            </station_tel_no>
                     <station_city>ΛΕΥΚΩΣΙΑ</station_city>
-                    <station_district>Άγιος Δομέτιος</station_district>
-                    <station_address1>Λεωφ. Γρηγόρη Αυξεντίου 16 Τ.Κ 2368
- τηλ: 22778752</station_address1>
-                    <price_modification_date>2016-04-22T09:57:00</price_modification_date>
-                    <Fuel_Price>1.400</Fuel_Price>
-                    <map_coordinates>35°10'17.02"N,33°20'20.01"E</map_coordinates>
+                    <station_district>Λευκωσία</station_district>
+                    <station_address1>3 Example Road Τ.Κ 1002
+ τηλ: 22000003</station_address1>
+                    <price_modification_date>2026-10-02T09:57:00</price_modification_date>
+                    <Fuel_Price>1.250</Fuel_Price>
+                    <map_coordinates>35°10'10.00"N,33°20'20.00"E</map_coordinates>
                     <isOffLine>false</isOffLine>
                 </PetroleumPriceDetails1>
                 <PetroleumPriceDetails1>
-                    <FuelCompanyCode>EN</FuelCompanyCode>
-                    <fuel_company_name>ENI</fuel_company_name>
-                    <station_code>AG013</station_code>
-                    <station_name>PETROLINA (HOLDINGS) PUBLIC LIMITED</station_name>
-                    <station_tel_no>24622133            </station_tel_no>
+                    <FuelCompanyCode>XB</FuelCompanyCode>
+                    <fuel_company_name>BETA FUEL</fuel_company_name>
+                    <station_code>XB002</station_code>
+                    <station_name>SAMPLE STATION FOUR LIMITED</station_name>
+                    <station_tel_no>22000004            </station_tel_no>
                     <station_city>ΛΑΡΝΑΚΑ</station_city>
                     <station_district>Λάρνακα</station_district>
-                    <station_address1>Λεωφ. Γ.Γρίβα Διγενή 4 Τ.Κ 6010
- τηλ: 24622133</station_address1>
-                    <price_modification_date>2018-10-04T05:48:00</price_modification_date>
-                    <Fuel_Price>1.330</Fuel_Price>
+                    <station_address1>4 Example Lane Τ.Κ 1003
+ τηλ: 22000004</station_address1>
+                    <price_modification_date>2026-10-04T05:48:00</price_modification_date>
+                    <Fuel_Price>1.260</Fuel_Price>
                     <map_coordinates />
                     <isOffLine>false</isOffLine>
                 </PetroleumPriceDetails1>
                 <PetroleumPriceDetails1>
-                    <FuelCompanyCode>TO</FuelCompanyCode>
-                    <fuel_company_name>TOTAL PLUS</fuel_company_name>
-                    <station_code>TO002</station_code>
-                    <station_name>Μ. Σ. ΓΕΩΡΓΙΟΣ ΧΡΙΣΤΟΦΟΡΟΥ &amp; ΣΙΑ ΛΙΜΙΤΕΔ</station_name>
+                    <FuelCompanyCode>XC</FuelCompanyCode>
+                    <fuel_company_name>GAMMA PLUS</fuel_company_name>
+                    <station_code>XC001</station_code>
+                    <station_name>SAMPLE STATION FIVE &amp; CO LIMITED</station_name>
                     <station_tel_no />
                     <station_city>ΛΕΜΕΣΟΣ</station_city>
-                    <station_district>Πεντάκωμο</station_district>
-                    <station_address1>Αγνοουμένων 15 Τ.Κ 4528 </station_address1>
-                    <price_modification_date>2018-10-05T15:44:00</price_modification_date>
-                    <Fuel_Price>1.327</Fuel_Price>
-                    <map_coordinates>34.734273,33.223580</map_coordinates>
+                    <station_district>Λεμεσός</station_district>
+                    <station_address1>5 Example Square Τ.Κ 1004 </station_address1>
+                    <price_modification_date>2026-10-05T15:44:00</price_modification_date>
+                    <Fuel_Price>1.270</Fuel_Price>
+                    <map_coordinates>34.7,33.2</map_coordinates>
                     <isOffLine>false</isOffLine>
                 </PetroleumPriceDetails1>
             </PetroleumPriceDetailsCollectionMob>
