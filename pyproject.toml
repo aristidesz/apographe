@@ -58,7 +58,7 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 88
-# The notebooks are the original prototypes, kept as they were.
+# Notebooks are not linted.
 extend-exclude = ["notebooks"]
 
 [tool.ruff.lint]

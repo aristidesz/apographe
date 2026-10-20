@@ -67,6 +67,7 @@ print(report.rows)  # rows written per table
 ## Learn more
 
 - [Commands and options](https://github.com/aristidesz/apographe/blob/main/docs/usage.md)
+- [Getting started notebook](https://github.com/aristidesz/apographe/blob/main/notebooks/00_getting_started.ipynb)
 - [Using it from Python](https://github.com/aristidesz/apographe/blob/main/docs/library.md)
 - [Collecting every day](https://github.com/aristidesz/apographe/blob/main/docs/scheduling.md)
 - [What each source collects](https://github.com/aristidesz/apographe/tree/main/docs/sources)
