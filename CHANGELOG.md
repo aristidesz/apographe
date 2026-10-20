@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Wording and README: Apographe collects public data in general, not only prices.
+  `cy.fuel` docs list the caveats of the scraping job.
 - `cy.fuel`: new `api` job, reading every station's price from the official
   CY Connect API (OAuth 2.0 client credentials from environment variables).
   Sandbox answers go to their own folder.
