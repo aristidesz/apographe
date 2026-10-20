@@ -20,7 +20,10 @@ from apographe.core.storage import Store
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        prog="apographe", description="Collect public price data."
+        prog="apographe",
+        description=(
+            "Collect public data, source by source and day by day, into plain files."
+        ),
     )
     parser.add_argument("--version", action="version", version=__version__)
     sub = parser.add_subparsers(dest="command", required=True)

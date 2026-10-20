@@ -1,12 +1,12 @@
 [project]
 name = "apographe"
 version = "0.1.0"
-description = "Collect public price data, source by source and day by day."
+description = "Collect public data, source by source and day by day, into plain files."
 authors = [{ name = "Aristides Zenonos", email = "10169524+aristidesz@users.noreply.github.com" }]
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
-keywords = ["open-data", "prices", "web-scraping", "time-series", "cyprus"]
+keywords = ["open-data", "data-collection", "web-scraping", "time-series", "etl"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",

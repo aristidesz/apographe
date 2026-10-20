@@ -1,6 +1,6 @@
 # Collecting every day
 
-Prices only become a history if you collect them every day. Apographe is a
+Public data only becomes a history if you collect them every day. Apographe is a
 command, so any scheduler works: cron on a server, a container on a timer, or
 GitHub Actions.
 
@@ -10,7 +10,7 @@ This workflow collects e-kalathi every morning and commits the new files to the
 repository it runs in. Keep that repository private if the data should be.
 
 ```yaml
-name: Collect prices
+name: Collect data
 
 on:
   schedule:

@@ -1,4 +1,4 @@
-"""Apographe: collect public price data, source by source and day by day."""
+"""Apographe: collect public data, source by source and day by day, into plain files."""
 
 from importlib.metadata import PackageNotFoundError, version
 

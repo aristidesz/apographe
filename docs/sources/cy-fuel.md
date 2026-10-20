@@ -15,6 +15,17 @@ source drives a headless Chrome: install it with `pip install "apographe[cy-fuel
 Columns: `brand, address, area, price, fuel_type, datetime`. The address holds
 the street and the phone number (`"X\n τηλ: Y"`).
 
+## Caveats of the default (`prices`) job
+
+- It needs Chrome and the `cy-fuel` extras (`pip install "apographe[cy-fuel]"`).
+- It reads the page's layout, so a redesign of the site breaks it.
+- The site once started redirecting to CY Login. The run then exits with code 2
+  and collects nothing.
+- File names are in UTC.
+- It is slower and heavier than the API.
+
+The `api` job avoids all of these, but needs approval (below).
+
 ## The official API
 
 The Ministry also offers the data as an API through CY Connect, the government's

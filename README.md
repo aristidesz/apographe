@@ -5,12 +5,15 @@
 [![CI](https://github.com/aristidesz/apographe/actions/workflows/ci.yml/badge.svg)](https://github.com/aristidesz/apographe/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/aristidesz/apographe/blob/main/LICENSE)
 
-**Collect public price data, day by day, into plain CSV files.**
+**Collect public data, day by day, into plain CSV files.**
 
-Apographe downloads prices that governments publish on their websites, such as
-every supermarket product in every store, or every petrol station's fuel
-prices, and saves them as dated CSV files you can open in pandas, Excel or
-anything else. Run it every day and you build your own price history.
+Governments and public bodies publish data on websites and APIs, usually as
+today's snapshot with no history. Apographe collects it on a schedule and saves
+it as dated CSV files you can open in pandas, Excel or anything else. Run it
+every day and you build your own history.
+
+Prices are the first sources (supermarket products, petrol stations), not the
+limit: a source is one small class, so any public dataset can be added.
 
 *ἀπογραφή (apographḗ): a register, the official record of what was counted.*
 
@@ -50,7 +53,7 @@ Apographe waits a few seconds between requests).
 | Source | What it collects | Install |
 |---|---|---|
 | `cy.ekalathi` | Cyprus supermarket prices: every product in every store, from [e-kalathi.gov.cy](https://www.e-kalathi.gov.cy) | `pip install apographe` |
-| `cy.fuel` | Cyprus fuel prices at every petrol station, from the [Ministry's observatory](https://eforms.eservices.cyprus.gov.cy/MCIT/MCIT/PetroleumPrices) | `pip install "apographe[cy-fuel]"` (needs Chrome) |
+| `cy.fuel` | Cyprus fuel prices at every petrol station. The default job scrapes the [Ministry's observatory](https://eforms.eservices.cyprus.gov.cy/MCIT/MCIT/PetroleumPrices) (needs Chrome, [caveats](https://github.com/aristidesz/apographe/blob/main/docs/sources/cy-fuel.md#caveats-of-the-default-prices-job)); the `api` job uses the official API (needs approval and credentials) | `pip install "apographe[cy-fuel]"` |
 
 ## Learn more
 
