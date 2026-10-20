@@ -8,14 +8,13 @@ from __future__ import annotations
 
 import argparse
 import sys
-from datetime import date, datetime
+from datetime import date
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
-from apographe import __version__
+from apographe._version import __version__
 from apographe.core import registry
-from apographe.core.source import LoginWall, Options, Report, SourceError
-from apographe.core.storage import Store
+from apographe.core.source import LoginWall, Report, SourceError
+from apographe.runner import run
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -79,43 +78,42 @@ def _list() -> int:
 
 
 def _run(args: argparse.Namespace) -> int:
+    current = args.source
+
+    def progress(job: str, day: date, report: Report | None) -> None:
+        nonlocal current
+        current = f"{args.source} {job}"
+        if report is None:
+            print(f"{current}: started for {day}", flush=True)
+            return
+        for table, count in report.rows.items():
+            print(f"{current}: {count} rows -> {table}", flush=True)
+
     try:
-        source = registry.load(args.source)
+        run(
+            args.source,
+            out=args.out,
+            jobs=args.jobs,
+            day=args.date,
+            limit=args.limit,
+            only=[x.strip() for x in args.only.split(",")] if args.only else None,
+            delay=args.delay,
+            inputs=args.inputs,
+            force=args.force,
+            progress=progress,
+        )
+    except LoginWall as exc:
+        print(f"::warning::{args.source} needs a login now, skipping: {exc}")
+        return 2
+    except SourceError as exc:
+        print(f"{current}: stopped: {exc}", file=sys.stderr)
+        return 1
     except KeyError as exc:
         print(exc.args[0], file=sys.stderr)
         return 1
-    jobs = args.jobs or list(source.default_jobs)
-    unknown = [job for job in jobs if job not in source.jobs]
-    if unknown:
-        print(
-            f"{source.id} has no job {', '.join(unknown)}; "
-            f"its jobs: {', '.join(source.jobs)}",
-            file=sys.stderr,
-        )
+    except ValueError as exc:
+        print(exc, file=sys.stderr)
         return 1
-    options = Options(
-        day=args.date or datetime.now(ZoneInfo(source.timezone)).date(),
-        limit=args.limit,
-        only=[x.strip() for x in args.only.split(",")] if args.only else [],
-        delay=args.delay,
-        inputs=args.inputs,
-        force=args.force,
-    )
-    out = Store(args.out).scope(source.folder)
-    total = Report()
-    for job in jobs:
-        print(f"{source.id} {job}: started for {options.day}", flush=True)
-        try:
-            report = source.run(job, out, options)
-        except LoginWall as exc:
-            print(f"::warning::{source.id} needs a login now, skipping: {exc}")
-            return 2
-        except SourceError as exc:
-            print(f"{source.id} {job}: stopped: {exc}", file=sys.stderr)
-            return 1
-        for table, count in report.rows.items():
-            print(f"{source.id} {job}: {count} rows -> {table}", flush=True)
-        total.merge(report)
     return 0
 
 

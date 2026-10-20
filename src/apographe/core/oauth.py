@@ -12,7 +12,7 @@ from collections.abc import Callable
 
 import requests
 
-from apographe import __version__
+from apographe._version import __version__
 from apographe.core.source import SourceError
 
 USER_AGENT = f"apographe/{__version__} (+https://github.com/aristidesz/apographe)"
@@ -20,6 +20,8 @@ EARLY = 60.0  # seconds before expiry at which a token is replaced
 
 
 class ClientCredentials:
+    """Sign in with a client id and secret; ``token()`` gives the access token."""
+
     def __init__(
         self,
         token_url: str,

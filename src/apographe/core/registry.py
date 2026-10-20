@@ -23,6 +23,7 @@ def available() -> dict[str, str]:
 
 
 def load(source_id: str) -> Source:
+    """Make the built-in source with this id; KeyError if there is none."""
     target = available().get(source_id)
     if target is None:
         known = ", ".join(sorted(available()))

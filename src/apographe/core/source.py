@@ -34,11 +34,13 @@ class Report:
     files: list[Path] = field(default_factory=list)
 
     def add(self, table: str, count: int, path: Path | None = None) -> None:
+        """Record ``count`` rows written to ``table`` (and the file, if given)."""
         self.rows[table] = self.rows.get(table, 0) + count
         if path is not None:
             self.files.append(path)
 
     def merge(self, other: Report) -> None:
+        """Add another report's rows and files to this one."""
         for table, count in other.rows.items():
             self.add(table, count)
         self.files.extend(other.files)

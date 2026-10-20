@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 
 import requests
 
-from apographe import __version__
+from apographe._version import __version__
 from apographe.core.source import LoginWall, SourceError
 
 USER_AGENT = f"apographe/{__version__} (+https://github.com/aristidesz/apographe)"
@@ -18,6 +18,12 @@ RETRY_STATUS = {429, 500, 502, 503, 504}
 
 
 class PoliteClient:
+    """Fetch JSON from one site, politely.
+
+    Waits ``min_interval`` seconds between requests, retries 429 and 5xx answers
+    with a growing pause, and raises ``LoginWall`` if the site asks for a login.
+    """
+
     def __init__(
         self,
         base_url: str,
