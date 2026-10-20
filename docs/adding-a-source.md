@@ -39,11 +39,35 @@ class ExampleFuelSource(Source):
         return report
 ```
 
-## Shipping it
+## Three ways to use it
 
-Put the module under `src/apographe/sources/<country>/`, add it to `BUILT_IN`
-in `src/apographe/core/registry.py`, add tests with a few trimmed real responses
-under `tests/fixtures/`, and open a pull request.
+1. **A dotted path, for development.** Save the class in `my_module.py` and run
+   `apographe run my_module:ExampleFuelSource --out data`. Any id containing `:`
+   is imported directly.
+2. **A package of your own.** Declare the class as an entry point in the
+   package's `pyproject.toml`:
+
+   ```toml
+   [project]
+   name = "apographe-xx-fuel"
+   dependencies = ["apographe"]
+
+   [project.entry-points."apographe.sources"]
+   "xx.fuel" = "apographe_xx_fuel:ExampleFuelSource"
+   ```
+
+   After `pip install apographe-xx-fuel`, `apographe list` shows `xx.fuel` and
+   `apographe run xx.fuel` works. No pull request to this repository. Name the
+   package `apographe-<country>-<name>`. A plug-in cannot replace a built-in id
+   (it is ignored with a warning), and installing one runs its code, so users
+   should only install plug-ins they trust.
+3. **A pull request here**, for sources that should ship with Apographe: put
+   the module under `src/apographe/sources/<country>/`, add it to `BUILT_IN` in
+   `src/apographe/core/registry.py`, add tests with a few trimmed real
+   responses under `tests/fixtures/`, and open the pull request.
+
+Ids are `<ISO country code>.<name>`, or `eu.` / `global.` for international
+sources.
 
 ## Conventions
 

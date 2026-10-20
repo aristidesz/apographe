@@ -31,7 +31,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("list", help="show the sources and their jobs")
 
     run = sub.add_parser("run", help="run a source's jobs")
-    run.add_argument("source", help="source id, e.g. cy.ekalathi")
+    run.add_argument("source", help="source id (cy.ekalathi) or module:Class")
     run.add_argument(
         "--job",
         action="append",
@@ -69,7 +69,11 @@ def main(argv: list[str] | None = None) -> int:
 
 def _list() -> int:
     for source_id in sorted(registry.available()):
-        source = registry.load(source_id)
+        try:
+            source = registry.load(source_id)
+        except Exception as exc:  # one broken plug-in must not hide the others
+            print(f"{source_id}\n   (could not load: {type(exc).__name__}: {exc})")
+            continue
         print(f"{source.id}  {source.title} ({source.country})")
         for job, about in source.jobs.items():
             mark = "*" if job in source.default_jobs else " "
@@ -83,6 +87,11 @@ def _run(args: argparse.Namespace) -> int:
         source = registry.load(args.source)
     except KeyError as exc:
         print(exc.args[0], file=sys.stderr)
+        return 1
+    except (ImportError, AttributeError, TypeError) as exc:
+        print(
+            f"cannot load {args.source}: {type(exc).__name__}: {exc}", file=sys.stderr
+        )
         return 1
     jobs = args.jobs or list(source.default_jobs)
     unknown = [job for job in jobs if job not in source.jobs]

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Third-party sources: packages can register sources through the
+  `apographe.sources` entry point; `apographe run module:Class` runs a source
+  class directly.
 - Wording and README: Apographe collects public data in general, not only prices.
   `cy.fuel` docs list the caveats of the scraping job.
 - `cy.fuel`: new `api` job, reading every station's price from the official
@@ -16,7 +19,7 @@ First release as Apographe. The project began as `fuel_prices_retrieval`
 collecting public price data from many sources.
 
 - Source framework: a `Source` interface, a polite HTTP client, atomic CSV and
-  JSON storage, plug-in discovery through the `apographe.sources` entry point.
+  JSON storage.
 - `apographe list` and `apographe run` commands.
 - `cy.ekalathi`: Cyprus supermarket prices, every product in every store, daily;
   cheapest-price history since September 2025.
