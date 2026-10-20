@@ -48,6 +48,15 @@ prices = pd.concat(map(pd.read_csv, files))
 Leave out `--limit 5` to collect every product (about 45 minutes, since
 Apographe waits a few seconds between requests).
 
+Or from Python:
+
+```python
+from apographe import run
+
+report = run("cy.ekalathi", out="data", limit=5)
+print(report.rows)  # rows written per table
+```
+
 ## Sources
 
 | Source | What it collects | Install |
@@ -58,6 +67,7 @@ Apographe waits a few seconds between requests).
 ## Learn more
 
 - [Commands and options](https://github.com/aristidesz/apographe/blob/main/docs/usage.md)
+- [Using it from Python](https://github.com/aristidesz/apographe/blob/main/docs/library.md)
 - [Collecting every day](https://github.com/aristidesz/apographe/blob/main/docs/scheduling.md)
 - [What each source collects](https://github.com/aristidesz/apographe/tree/main/docs/sources)
 - [Adding a source for your country](https://github.com/aristidesz/apographe/blob/main/docs/adding-a-source.md)

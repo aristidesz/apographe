@@ -23,12 +23,15 @@ class Store:
         self.root = Path(root)
 
     def scope(self, folder: str) -> Store:
+        """A store for the subfolder ``folder``, e.g. ``"cy/ekalathi"``."""
         return Store(self.root / folder)
 
     def path(self, rel: str) -> Path:
+        """The full path of ``rel`` inside this store."""
         return self.root / rel
 
     def exists(self, rel: str) -> bool:
+        """Whether ``rel`` has been written already."""
         return self.path(rel).exists()
 
     def write_csv(
@@ -48,6 +51,7 @@ class Store:
         return path, count
 
     def read_csv(self, rel: str) -> list[dict[str, str]]:
+        """Read a CSV (gzipped or not) back as dicts; ``[]`` if it does not exist."""
         path = self.path(rel)
         if not path.exists():
             return []
