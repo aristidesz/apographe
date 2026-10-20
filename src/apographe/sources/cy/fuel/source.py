@@ -27,6 +27,13 @@ class FuelSource(Source):
         "pdf": "import the observatory page saved as PDFs (--input)",
     }
     default_jobs = ("prices",)
+    env = {
+        "CYCONNECT_CLIENT_ID": "CY Connect client id (from CDS Support)",
+        "CYCONNECT_CLIENT_SECRET": "CY Connect client secret (from CDS Support)",  # nosec B105
+        "CYCONNECT_ENV": "sandbox (default) or production",
+    }
+    job_env = {"api": ("CYCONNECT_CLIENT_ID", "CYCONNECT_CLIENT_SECRET")}
+    extras = {"prices": "cy-fuel", "pdf": "cy-fuel"}
 
     def __init__(
         self,

@@ -57,6 +57,8 @@ report = run("cy.ekalathi", out="data", limit=5)
 print(report.rows)  # rows written per table
 ```
 
+Some jobs need credentials; `apographe info <source>` lists them.
+
 ## Sources
 
 | Source | What it collects | Install |

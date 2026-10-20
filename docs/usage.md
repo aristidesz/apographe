@@ -28,6 +28,27 @@ apographe run cy.fuel --job pdf --input ~/Downloads --out data
 A long run that stops part way can simply be run again: it carries on where it
 stopped.
 
+## Environment variables
+
+Some jobs need credentials. `apographe info <source>` lists each job with the
+variables it needs, and `apographe list` marks those jobs `[needs env]`. A job
+whose variables are missing stops before it does anything, naming the
+variables (never their values).
+
+| Source | Job | Variables | Where to get them |
+|---|---|---|---|
+| `cy.fuel` | `api` | `CYCONNECT_CLIENT_ID`, `CYCONNECT_CLIENT_SECRET` | CDS Support, see [cy.fuel](sources/cy-fuel.md#getting-access) |
+
+Set them in your shell, or put `KEY=VALUE` lines in a file and pass it:
+
+```bash
+apographe run cy.fuel --job api --env-file .env.production
+```
+
+`--env-file` skips blank lines and `#` comments and strips quotes around values.
+It applies to that run only, and a variable already set in your shell wins over
+the file. Keep the file out of git.
+
 ## Exit codes
 
 | Code | Meaning |
