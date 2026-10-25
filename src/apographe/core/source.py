@@ -68,9 +68,15 @@ class Source(ABC):
     timezone: ClassVar[str] = "UTC"  # the day a run belongs to is taken here
     jobs: ClassVar[dict[str, str]]  # job name -> one-line description
     default_jobs: ClassVar[tuple[str, ...]]  # what `apographe run <id>` does
+    hidden_jobs: ClassVar[tuple[str, ...]] = ()  # run by name, but not listed
     env: ClassVar[dict[str, str]] = {}  # variable -> what it is
     job_env: ClassVar[dict[str, tuple[str, ...]]] = {}  # job -> variables it needs
     extras: ClassVar[dict[str, str]] = {}  # job -> pip extra it needs
+
+    @property
+    def listed_jobs(self) -> dict[str, str]:
+        """The jobs to show people: all except ``hidden_jobs``."""
+        return {k: v for k, v in self.jobs.items() if k not in self.hidden_jobs}
 
     @property
     def folder(self) -> str:

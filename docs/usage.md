@@ -35,14 +35,10 @@ variables it needs, and `apographe list` marks those jobs `[needs env]`. A job
 whose variables are missing stops before it does anything, naming the
 variables (never their values).
 
-| Source | Job | Variables | Where to get them |
-|---|---|---|---|
-| `cy.fuel` | `api` | `CYCONNECT_CLIENT_ID`, `CYCONNECT_CLIENT_SECRET`, `CYCONNECT_TOKEN_URL`, `CYCONNECT_API_URL` | CDS Support, see [cy.fuel](sources/cy-fuel.md#getting-access) |
-
 Set them in your shell, or put `KEY=VALUE` lines in a file and pass it:
 
 ```bash
-apographe run cy.fuel --job api --env-file .env.production
+apographe run SOURCE --env-file .env
 ```
 
 `--env-file` skips blank lines and `#` comments and strips quotes around values.

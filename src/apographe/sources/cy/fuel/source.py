@@ -27,6 +27,7 @@ class FuelSource(Source):
         "pdf": "import the observatory page saved as PDFs (--input)",
     }
     default_jobs = ("prices",)
+    hidden_jobs = ("api",)
     env = {
         "CYCONNECT_CLIENT_ID": "CY Connect client id (from CDS Support)",
         "CYCONNECT_CLIENT_SECRET": "CY Connect client secret (from CDS Support)",  # nosec B105
