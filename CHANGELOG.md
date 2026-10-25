@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- `cy.fuel` scraper: Chrome's sandbox stays on except in CI (or under Xvfb), and
+  the chromedriver is fetched by Selenium itself, so `chromedriver-autoinstaller`
+  is no longer a dependency.
 - `cy.fuel api`: the endpoints now come from `CYCONNECT_TOKEN_URL` and
   `CYCONNECT_API_URL` (from the CY Connect onboarding package) instead of the
   code.

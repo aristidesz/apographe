@@ -1,8 +1,8 @@
+import os
 import shutil
 import time
 from pathlib import Path
 
-import chromedriver_autoinstaller
 import pandas as pd
 from bs4 import BeautifulSoup
 from pyvirtualdisplay import Display
@@ -79,14 +79,14 @@ def download_petroleum_prices():
         display = Display(visible=0, size=(1200, 1200))
         display.start()
 
-    chromedriver_autoinstaller.install()
-
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--window-size=1200,1200")
     chrome_options.add_argument("--disable-gpu")
-    # Chrome's sandbox does not start inside CI containers.
-    chrome_options.add_argument("--no-sandbox")
+    # Chrome's sandbox does not start inside CI containers; elsewhere keep it on,
+    # since this loads a third-party site.
+    if os.environ.get("CI") == "true" or display:
+        chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 
     driver = webdriver.Chrome(options=chrome_options)
