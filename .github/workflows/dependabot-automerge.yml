@@ -1,0 +1,19 @@
+name: Dependabot auto-merge
+
+# Turns on auto-merge for Dependabot's pull requests. GitHub then merges each
+# one by itself once the required checks (see the ruleset on main) pass.
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge --auto --merge "$PR_URL"
