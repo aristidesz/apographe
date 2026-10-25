@@ -3,6 +3,7 @@ import os
 import pytest
 
 from apographe import SourceError, cli, run
+from apographe.core import registry
 from apographe.core.source import Report, Source
 
 
@@ -68,19 +69,34 @@ def test_cy_fuel_api_needs_its_variables(tmp_path, monkeypatch):
         run("cy.fuel", jobs=["api"], out=tmp_path)
 
 
-def test_info_lists_variables_and_docs_link(capsys):
-    assert cli.main(["info", "cy.fuel"]) == 0
+def test_info_lists_variables_and_docs_link(capsys, monkeypatch):
+    monkeypatch.setitem(registry.BUILT_IN, "xx.key", f"{__name__}:NeedsKey")
+    assert cli.main(["info", "xx.key"]) == 0
     out = capsys.readouterr().out
-    assert "CYCONNECT_CLIENT_SECRET" in out
-    assert "apographe[cy-fuel]" in out
-    assert "docs/sources/cy-fuel.md" in out
+    assert "needs XX_KEY: an API key" in out
+    assert "docs/sources/xx-key.md" in out
     assert cli.main(["info", "xx.nothing"]) == 1
+    cli.main(["info", "cy.fuel"])
+    assert "apographe[cy-fuel]" in capsys.readouterr().out
 
 
-def test_list_marks_jobs_that_need_env(capsys):
+def test_list_marks_jobs_that_need_env(capsys, monkeypatch):
+    monkeypatch.setitem(registry.BUILT_IN, "xx.key", f"{__name__}:NeedsKey")
     cli.main(["list"])
     out = capsys.readouterr().out
     assert "[needs env]" in out and "[needs extra cy-fuel]" in out
+
+
+def test_hidden_job_is_not_shown_but_still_runs(capsys, tmp_path, monkeypatch):
+    cli.main(["list"])
+    cli.main(["info", "cy.fuel"])
+    cli.main(["run", "cy.fuel", "--job", "nope"])
+    shown = capsys.readouterr()
+    assert "api" not in (shown.out + shown.err).replace("apographe", "")
+    for name in ("CYCONNECT_CLIENT_ID", "CYCONNECT_TOKEN_URL"):
+        monkeypatch.delenv(name, raising=False)
+    with pytest.raises(SourceError, match="CYCONNECT_CLIENT_ID"):
+        run("cy.fuel", jobs=["api"], out=tmp_path)
 
 
 def test_help_has_examples_and_docs_link(capsys):

@@ -57,14 +57,12 @@ report = run("cy.ekalathi", out="data", limit=5)
 print(report.rows)  # rows written per table
 ```
 
-Some jobs need credentials; `apographe info <source>` lists them.
-
 ## Sources
 
 | Source | What it collects | Install |
 |---|---|---|
 | `cy.ekalathi` | Cyprus supermarket prices: every product in every store, from [e-kalathi.gov.cy](https://www.e-kalathi.gov.cy) | `pip install apographe` |
-| `cy.fuel` | Cyprus fuel prices at every petrol station. The default job scrapes the [Ministry's observatory](https://eforms.eservices.cyprus.gov.cy/MCIT/MCIT/PetroleumPrices) (needs Chrome, [caveats](https://github.com/aristidesz/apographe/blob/main/docs/sources/cy-fuel.md#caveats-of-the-default-prices-job)); the `api` job uses the official API (needs approval and credentials) | `pip install "apographe[cy-fuel]"` |
+| `cy.fuel` | Cyprus fuel prices at every petrol station. The default job scrapes the [Ministry's observatory](https://eforms.eservices.cyprus.gov.cy/MCIT/MCIT/PetroleumPrices) (needs Chrome, [caveats](https://github.com/aristidesz/apographe/blob/main/docs/sources/cy-fuel.md#caveats-of-the-default-prices-job)) | `pip install "apographe[cy-fuel]"` |
 
 ## Learn more
 

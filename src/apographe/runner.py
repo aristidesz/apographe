@@ -98,7 +98,7 @@ def run(
     if unknown:
         raise ValueError(
             f"{source.id} has no job {', '.join(unknown)}; "
-            f"its jobs: {', '.join(source.jobs)}"
+            f"its jobs: {', '.join(source.listed_jobs)}"
         )
     for job in jobs:
         missing = [v for v in source.job_env.get(job, ()) if not os.environ.get(v)]

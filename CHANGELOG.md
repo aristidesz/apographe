@@ -20,8 +20,4 @@ many sources into dated plain files.
 - `cy.fuel`: Cyprus fuel prices per station.
   - `prices` (default): scrapes the Ministry's website with Chrome. Chrome's
     sandbox stays on except in CI.
-  - `api`: the official CY Connect API (OAuth 2.0 client credentials). The
-    endpoints and credentials come from environment variables
-    (`CYCONNECT_TOKEN_URL`, `CYCONNECT_API_URL`, `CYCONNECT_CLIENT_ID`,
-    `CYCONNECT_CLIENT_SECRET`). Sandbox answers go to their own folder.
   - `pdf`: import the observatory page saved as PDFs.

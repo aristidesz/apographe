@@ -91,7 +91,7 @@ def _list() -> int:
     for source_id in sorted(registry.available()):
         source = registry.load(source_id)
         print(f"{source.id}  {source.title} ({source.country})")
-        for job, about in source.jobs.items():
+        for job, about in source.listed_jobs.items():
             mark = "*" if job in source.default_jobs else " "
             needs = []
             if source.job_env.get(job):
@@ -114,18 +114,13 @@ def _info(source_id: str) -> int:
     print(f"time zone: {source.timezone}")
     print(f"output:    <out>/{source.folder}/")
     print("jobs:")
-    for job, about in source.jobs.items():
+    for job, about in source.listed_jobs.items():
         default = " (default)" if job in source.default_jobs else ""
         print(f"  {job}{default}: {about}")
         if job in source.extras:
             print(f"    install: pip install 'apographe[{source.extras[job]}]'")
         for name in source.job_env.get(job, ()):
             print(f"    needs {name}: {source.env.get(name, '')}")
-    optional = [
-        n for n in source.env if not any(n in v for v in source.job_env.values())
-    ]
-    for name in optional:
-        print(f"optional {name}: {source.env[name]}")
     print(f"docs: {DOCS}/sources/{source.id.replace('.', '-')}.md")
     return 0
 
